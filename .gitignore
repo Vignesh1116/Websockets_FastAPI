@@ -1,0 +1,23 @@
+# Python dependencies
+venv/
+.venv/
+env/
+bin/
+lib/
+share/
+include/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
