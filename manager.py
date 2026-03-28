@@ -4,27 +4,26 @@ class WebSocketManager:
     def __init__(self):
         self.connected_clients = []
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self,websocket:WebSocket):
+        client_ip = f"{websocket.client.host}:{websocket.client.port}"
+
         await websocket.accept()
+        print(f"client")
         self.connected_clients.append(websocket)
-        print(f"Client {websocket.client.host}:{websocket.client.port} connected.")
-        print(f"Total connections: {len(self.connected_clients)}")
+        print(f"connected clients: {self.connected_clients}")
 
-    async def broadcast(self, message: str, sender: WebSocket):
+        message = {"client":client_ip,"message":f"Welcome {client_ip}"}
+        await websocket.send_json(message)
+
+    
+    async def send_message(self,websocket:WebSocket,message:dict):
         payload = {
-            "client": f"{sender.client.host}:{sender.client.port}",
-            "message": message
+            "client":f"{websocket.client.host}:{websocket.client.port}",
+            "message":message
         }
-        for client in self.connected_clients:
-            try:
-                await client.send_json(payload)
-            except Exception:
-                # Handle stale connections
-                pass
-
-    async def disconnect(self, websocket: WebSocket):
-        if websocket in self.connected_clients:
-            self.connected_clients.remove(websocket)
-            print(f"Client {websocket.client.host}:{websocket.client.port} disconnected.")
-            print(f"Total connections: {len(self.connected_clients)}")
-
+        await websocket.send_json(message)
+      
+    async def disconnect(self,websocket:WebSocket):
+        self.connected_clients.remove(websocket)
+        print(f"client {websocket.client.host}:{websocket.client.port} disconnected")
+        print(f"connected clients: {self.connected_clients}")

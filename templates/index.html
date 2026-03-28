@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI WebSocket </title>
+    <form>
+        <label for="message">Message:</label>
+        <p>
+            <input type="text" name="message" id="message">
+            <button type="submit">Send</button>
+        </p>
+    </form>
+</head>
+<body>
+    <h1>FastAPI WebSocket</h1>
+
+    <script>
+        const ws = new WebSocket("ws://localhost:8000/ws");
+        ws.onopen = () => {
+            console.log("Connected to WebSocket Server");
+        }
+
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            console.log(message);
+        }
+
+        ws.onerror = (error) => {
+            console.log("Wewbsocket Error:",error);
+        }
+
+        ws.onclose = () => {
+            console.log("WebSocket Connection Closed");
+        }
+    </script>
+</body>
+</html>
